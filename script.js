@@ -16,7 +16,7 @@ const HOLD_DURATION = 2000; // 2 seconds to trigger animation
 // Gesture smoothing to reduce glitchiness
 let lastDetectedGesture = null;
 let gestureConfirmCount = 0;
-const CONFIRMATION_FRAMES = 3; // Need 3 consecutive frames to confirm gesture change
+const CONFIRMATION_FRAMES = 1; // Need 1 frame to confirm gesture change (instant response)
 
 // Gesture assets mapping
 const GESTURES = {
@@ -85,8 +85,8 @@ const hands = new Hands({
 hands.setOptions({
     maxNumHands: 1,
     modelComplexity: 1,
-    minDetectionConfidence: 0.7,
-    minTrackingConfidence: 0.7
+    minDetectionConfidence: 0.5,
+    minTrackingConfidence: 0.5
 });
 
 hands.onResults(onHandResults);
@@ -134,25 +134,25 @@ function recognizeGesture(landmarks, handedness) {
     const palmOrientation = getPalmOrientation(landmarks);
     const handShape = getHandShape(landmarks);
 
-    // Wolf: Index and pinky extended, others folded (like rock horns)
-    if (fingers.index && fingers.pinky && !fingers.middle && !fingers.ring && !fingers.thumb) {
+    // Wolf: Index and pinky extended (like rock horns) - relaxed, middle/ring can be partially up
+    if (fingers.index && fingers.pinky) {
         return 'wolf';
     }
 
-    // Butterfly: Both hands would be needed, but for single hand - thumbs up with fingers spread
+    // Butterfly: All fingers spread wide
     if (fingers.thumb && fingers.index && fingers.middle && fingers.ring && fingers.pinky) {
         const spread = getFingersSpread(landmarks);
-        if (spread > 0.15) { // Fingers well spread
+        if (spread > 0.10) { // Relaxed spread requirement
             return 'butterfly';
         }
     }
 
-    // Rabbit: Index and middle extended, others folded (peace sign / bunny ears)
-    if (fingers.index && fingers.middle && !fingers.ring && !fingers.pinky && !fingers.thumb) {
+    // Rabbit: Index and middle extended (peace sign / bunny ears) - relaxed
+    if (fingers.index && fingers.middle) {
         return 'rabbit';
     }
 
-    // Elephant: Fist with thumb between index and middle (elephant trunk)
+    // Elephant: Fist with thumb extended (elephant trunk) - relaxed
     if (!fingers.index && !fingers.middle && !fingers.ring && !fingers.pinky) {
         const thumbPos = getThumbPosition(landmarks);
         if (thumbPos === 'extended') {
@@ -168,12 +168,15 @@ function getFingersState(landmarks) {
     const tips = [8, 12, 16, 20]; // Index, Middle, Ring, Pinky
     const pips = [6, 10, 14, 18];
 
+    // More lenient detection with buffer
+    const buffer = 0.02;
+
     const fingers = {
-        thumb: landmarks[4].y < landmarks[3].y, // Thumb up
-        index: landmarks[8].y < landmarks[6].y, // Index extended
-        middle: landmarks[12].y < landmarks[10].y, // Middle extended
-        ring: landmarks[16].y < landmarks[14].y, // Ring extended
-        pinky: landmarks[20].y < landmarks[18].y // Pinky extended
+        thumb: landmarks[4].y < landmarks[3].y + buffer, // Thumb up (more lenient)
+        index: landmarks[8].y < landmarks[6].y + buffer, // Index extended (more lenient)
+        middle: landmarks[12].y < landmarks[10].y + buffer, // Middle extended (more lenient)
+        ring: landmarks[16].y < landmarks[14].y + buffer, // Ring extended (more lenient)
+        pinky: landmarks[20].y < landmarks[18].y + buffer // Pinky extended (more lenient)
     };
 
     return fingers;
