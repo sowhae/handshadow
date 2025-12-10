@@ -61,9 +61,7 @@ body {
     position: fixed;
     top: 380px; /* Below hint button (20px top + 350px height + 10px spacing) */
     right: 20px; /* Right-aligned with hint button */
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+    width: 80px;
     z-index: 150;
     transition: opacity 0.3s;
 }
@@ -72,16 +70,11 @@ body {
     display: none;
 }
 
-.gesture-icon-item {
-    width: 60px;
+#gesture-icons img {
+    width: 100%;
     height: auto;
     object-fit: contain;
     cursor: pointer;
-    transition: transform 0.2s;
-}
-
-.gesture-icon-item:hover {
-    transform: scale(1.1);
 }
 
 /* Shadow puppet display area */
@@ -211,11 +204,7 @@ body {
     #gesture-icons {
         top: 275px; /* Below smaller hint button */
         right: 15px;
-        gap: 6px;
-    }
-
-    .gesture-icon-item {
-        width: 50px;
+        width: 70px;
     }
 
     #puppet-container {
@@ -237,11 +226,7 @@ body {
     #gesture-icons {
         top: 220px; /* Below smaller hint button */
         right: 10px;
-        gap: 5px;
-    }
-
-    .gesture-icon-item {
-        width: 40px;
+        width: 60px;
     }
 
     #puppet-container {
