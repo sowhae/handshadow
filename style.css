@@ -39,8 +39,8 @@ body {
     position: fixed;
     top: 30px;
     right: 30px;
-    width: 200px;
-    height: 200px;
+    width: 250px;
+    height: 250px;
     cursor: pointer;
     z-index: 100;
     transition: transform 0.2s;
@@ -59,17 +59,13 @@ body {
 /* Gesture icons overlay */
 #gesture-icons {
     position: fixed;
-    top: 250px; /* Below hint button (30px top + 200px height + 20px spacing) */
+    top: 300px; /* Below hint button (30px top + 250px height + 20px spacing) */
     right: 30px; /* Right-aligned with hint button */
-    width: 400px;
+    width: 500px;
     max-width: 50vw;
     z-index: 150;
     cursor: pointer;
     opacity: 1;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 15px;
-    padding: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     transition: opacity 0.3s;
 }
 
@@ -202,16 +198,16 @@ body {
 /* Responsive adjustments */
 @media (max-width: 768px) {
     #hint-icon {
-        width: 150px;
-        height: 150px;
+        width: 180px;
+        height: 180px;
         top: 20px;
         right: 20px;
     }
 
     #gesture-icons {
-        top: 190px; /* Below smaller hint button */
+        top: 220px; /* Below smaller hint button */
         right: 20px;
-        width: 350px;
+        width: 400px;
         max-width: 60vw;
     }
 
@@ -225,18 +221,17 @@ body {
 
 @media (max-width: 480px) {
     #hint-icon {
-        width: 120px;
-        height: 120px;
+        width: 140px;
+        height: 140px;
         top: 15px;
         right: 15px;
     }
 
     #gesture-icons {
-        top: 150px; /* Below smaller hint button */
+        top: 170px; /* Below smaller hint button */
         right: 15px;
         width: 300px;
-        max-width: 70vw;
-        padding: 10px;
+        max-width: 75vw;
     }
 
     #puppet-container {
