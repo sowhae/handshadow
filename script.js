@@ -44,8 +44,14 @@ hintIcon.addEventListener('click', (e) => {
     toggleHints();
 });
 
+// Close gesture icons when clicked
+gestureIcons.addEventListener('click', (e) => {
+    e.stopPropagation();
+    hideHints();
+});
+
 document.addEventListener('click', (e) => {
-    if (hintsVisible && !hintIcon.contains(e.target)) {
+    if (hintsVisible && !hintIcon.contains(e.target) && !gestureIcons.contains(e.target)) {
         hideHints();
     }
 });
