@@ -39,8 +39,8 @@ body {
     position: fixed;
     top: 30px;
     right: 30px;
-    width: 150px;
-    height: 150px;
+    width: 200px;
+    height: 200px;
     cursor: pointer;
     z-index: 100;
     transition: transform 0.2s;
@@ -62,10 +62,11 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    max-width: 90vw;
-    max-height: 90vh;
+    max-width: 80vw;
+    max-height: 80vh;
     z-index: 150;
     cursor: pointer;
+    opacity: 1;
     transition: opacity 0.3s;
 }
 
@@ -77,7 +78,6 @@ body {
 
 #gesture-icons.hidden {
     display: none;
-    opacity: 0;
 }
 
 /* Shadow puppet display area */
@@ -86,10 +86,10 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 240vh;
-    height: 240vh;
-    max-width: 240vw;
-    max-height: 240vh;
+    width: 160vh;
+    height: 160vh;
+    max-width: 160vw;
+    max-height: 160vh;
     z-index: 50;
     pointer-events: none;
 }
@@ -198,30 +198,30 @@ body {
 /* Responsive adjustments */
 @media (max-width: 768px) {
     #hint-icon {
-        width: 100px;
-        height: 100px;
+        width: 150px;
+        height: 150px;
         top: 20px;
         right: 20px;
     }
 
     #puppet-container {
-        width: 220vh;
-        height: 220vh;
-        max-width: 220vw;
-        max-height: 220vh;
+        width: 150vh;
+        height: 150vh;
+        max-width: 150vw;
+        max-height: 150vh;
     }
 }
 
 @media (max-width: 480px) {
     #hint-icon {
-        width: 80px;
-        height: 80px;
+        width: 120px;
+        height: 120px;
         top: 15px;
         right: 15px;
     }
 
     #puppet-container {
-        width: 200vw;
-        height: 200vw;
+        width: 140vw;
+        height: 140vw;
     }
 }

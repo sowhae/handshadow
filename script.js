@@ -13,6 +13,11 @@ let gestureHoldStart = null;
 let isAnimationPlaying = false;
 const HOLD_DURATION = 2000; // 2 seconds to trigger animation
 
+// Gesture smoothing to reduce glitchiness
+let lastDetectedGesture = null;
+let gestureConfirmCount = 0;
+const CONFIRMATION_FRAMES = 3; // Need 3 consecutive frames to confirm gesture change
+
 // Gesture assets mapping
 const GESTURES = {
     wolf: {
@@ -44,14 +49,10 @@ hintIcon.addEventListener('click', (e) => {
     toggleHints();
 });
 
-// Close gesture icons when clicked
-gestureIcons.addEventListener('click', (e) => {
-    e.stopPropagation();
-    hideHints();
-});
-
+// Close gesture icons when clicked anywhere on screen
 document.addEventListener('click', (e) => {
-    if (hintsVisible && !hintIcon.contains(e.target) && !gestureIcons.contains(e.target)) {
+    // If gesture icons are visible and click is not on hint icon, hide them
+    if (hintsVisible && !hintIcon.contains(e.target)) {
         hideHints();
     }
 });
@@ -229,10 +230,25 @@ function getThumbPosition(landmarks) {
     return 'folded';
 }
 
-// Handle detected gesture
+// Handle detected gesture with smoothing
 function handleGestureDetected(gesture) {
+    // Smooth gesture detection - require multiple consecutive frames
+    if (gesture !== lastDetectedGesture) {
+        lastDetectedGesture = gesture;
+        gestureConfirmCount = 1;
+        return; // Don't change yet, wait for confirmation
+    } else {
+        gestureConfirmCount++;
+
+        // Only change gesture after confirmation frames
+        if (gestureConfirmCount < CONFIRMATION_FRAMES) {
+            return;
+        }
+    }
+
+    // Gesture confirmed
     if (gesture !== currentGesture) {
-        // New gesture detected
+        // New gesture detected and confirmed
         currentGesture = gesture;
         gestureHoldStart = Date.now();
         isAnimationPlaying = false;
@@ -250,10 +266,17 @@ function handleGestureDetected(gesture) {
 
 // Handle no gesture detected
 function handleNoGesture() {
-    currentGesture = null;
-    gestureHoldStart = null;
-    isAnimationPlaying = false;
-    hidePuppet();
+    // Reset smoothing
+    lastDetectedGesture = null;
+    gestureConfirmCount = 0;
+
+    // Only hide if we had a gesture before
+    if (currentGesture !== null) {
+        currentGesture = null;
+        gestureHoldStart = null;
+        isAnimationPlaying = false;
+        hidePuppet();
+    }
 }
 
 // Show puppet static image
