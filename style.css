@@ -1,0 +1,223 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+/* Spotlight background - full screen */
+#spotlight-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('ixp gestures/spotlight.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 1;
+}
+
+/* Hide webcam and canvas (only used for processing) */
+#webcam,
+#output-canvas {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+    visibility: hidden;
+}
+
+/* Hint icon - top right corner */
+#hint-icon {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+    z-index: 100;
+    transition: transform 0.2s;
+}
+
+#hint-icon:hover {
+    transform: scale(1.1);
+}
+
+#hint-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Gesture icons overlay */
+#gesture-icons {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 90vw;
+    max-height: 90vh;
+    z-index: 99;
+    cursor: pointer;
+    transition: opacity 0.3s;
+}
+
+#gesture-icons img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+#gesture-icons.hidden {
+    display: none;
+    opacity: 0;
+}
+
+/* Shadow puppet display area */
+#puppet-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 400px;
+    z-index: 50;
+    pointer-events: none;
+}
+
+#puppet-image,
+#puppet-video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: opacity 0.3s;
+}
+
+#puppet-image.hidden,
+#puppet-video.hidden {
+    display: none;
+    opacity: 0;
+}
+
+/* Animations for puppets when held */
+#puppet-image.animate-wolf {
+    animation: wolf-howl 2s ease-in-out infinite;
+}
+
+#puppet-image.animate-butterfly {
+    animation: butterfly-flutter 1.5s ease-in-out infinite;
+}
+
+#puppet-image.animate-elephant {
+    animation: elephant-swing 2s ease-in-out infinite;
+}
+
+#puppet-image.animate-rabbit {
+    animation: rabbit-hop 1s ease-in-out infinite;
+}
+
+/* Wolf howl animation - scale and tilt */
+@keyframes wolf-howl {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+    }
+    25% {
+        transform: scale(1.1) rotate(-5deg);
+    }
+    75% {
+        transform: scale(1.1) rotate(5deg);
+    }
+}
+
+/* Butterfly flutter - gentle wing movement */
+@keyframes butterfly-flutter {
+    0%, 100% {
+        transform: scale(1) translateY(0);
+    }
+    25% {
+        transform: scale(1.05) translateY(-10px);
+    }
+    50% {
+        transform: scale(0.95) translateY(0);
+    }
+    75% {
+        transform: scale(1.05) translateY(-10px);
+    }
+}
+
+/* Elephant trunk swing */
+@keyframes elephant-swing {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(-10deg);
+    }
+    75% {
+        transform: rotate(10deg);
+    }
+}
+
+/* Rabbit hop */
+@keyframes rabbit-hop {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Loading indicator */
+#loading {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px 40px;
+    border-radius: 10px;
+    z-index: 200;
+    font-size: 18px;
+}
+
+#loading.hidden {
+    display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #hint-icon {
+        width: 60px;
+        height: 60px;
+        top: 15px;
+        right: 15px;
+    }
+
+    #puppet-container {
+        width: 300px;
+        height: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    #hint-icon {
+        width: 50px;
+        height: 50px;
+        top: 10px;
+        right: 10px;
+    }
+
+    #puppet-container {
+        width: 250px;
+        height: 250px;
+    }
+}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hand Shadow Puppets</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Spotlight background -->
+    <div id="spotlight-bg"></div>
+
+    <!-- Hidden webcam video for hand detection -->
+    <video id="webcam" autoplay playsinline></video>
+
+    <!-- Hidden canvas for MediaPipe processing -->
+    <canvas id="output-canvas"></canvas>
+
+    <!-- Hint icon (top right corner) -->
+    <div id="hint-icon">
+        <img src="ixp gestures/hint.PNG" alt="Hint">
+    </div>
+
+    <!-- Gesture icons overlay (hidden by default) -->
+    <div id="gesture-icons" class="hidden">
+        <img src="ixp gestures/gesture icons.PNG" alt="Gesture Icons">
+    </div>
+
+    <!-- Shadow puppet display area -->
+    <div id="puppet-container">
+        <img id="puppet-image" class="hidden" alt="Shadow Puppet">
+        <video id="puppet-video" class="hidden" loop></video>
+    </div>
+
+    <!-- Loading indicator -->
+    <div id="loading">
+        <p>Loading hand detection...</p>
+    </div>
+
+    <!-- MediaPipe Hands -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+
+    <!-- Main script -->
+    <script src="script.js"></script>
+</body>
+</html>
