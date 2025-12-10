@@ -61,7 +61,7 @@ body {
     position: fixed;
     top: 380px; /* Below hint button (20px top + 350px height + 10px spacing) */
     right: 20px; /* Right-aligned with hint button */
-    width: 120px;
+    width: 400px;
     z-index: 150;
     transition: opacity 0.3s;
 }
@@ -204,7 +204,7 @@ body {
     #gesture-icons {
         top: 275px; /* Below smaller hint button */
         right: 15px;
-        width: 100px;
+        width: 300px;
     }
 
     #puppet-container {
@@ -226,7 +226,7 @@ body {
     #gesture-icons {
         top: 220px; /* Below smaller hint button */
         right: 10px;
-        width: 80px;
+        width: 250px;
     }
 
     #puppet-container {
