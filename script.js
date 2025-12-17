@@ -134,30 +134,26 @@ function recognizeGesture(landmarks, handedness) {
     const palmOrientation = getPalmOrientation(landmarks);
     const handShape = getHandShape(landmarks);
 
-    // Wolf: Index and pinky extended (like rock horns) - relaxed, middle/ring can be partially up
-    if (fingers.index && fingers.pinky) {
-        return 'wolf';
-    }
-
-    // Butterfly: All fingers spread wide
-    if (fingers.thumb && fingers.index && fingers.middle && fingers.ring && fingers.pinky) {
-        const spread = getFingersSpread(landmarks);
-        if (spread > 0.10) { // Relaxed spread requirement
-            return 'butterfly';
-        }
-    }
-
-    // Rabbit: Index and middle extended (peace sign / bunny ears) - relaxed
-    if (fingers.index && fingers.middle) {
+    // Rabbit: Two fingers up (index and middle) - peace sign/bunny ears
+    if (fingers.index && fingers.middle && !fingers.ring && !fingers.pinky) {
         return 'rabbit';
     }
 
-    // Elephant: Fist with thumb extended (elephant trunk) - relaxed
-    if (!fingers.index && !fingers.middle && !fingers.ring && !fingers.pinky) {
-        const thumbPos = getThumbPosition(landmarks);
-        if (thumbPos === 'extended') {
-            return 'elephant';
-        }
+    // Wolf: Pinch position (thumb and index close together, forming circle)
+    const thumbIndexDistance = getThumbIndexDistance(landmarks);
+    if (thumbIndexDistance < 0.05) { // Thumb and index very close
+        return 'wolf';
+    }
+
+    // Elephant: Hand pointing down like trunk (all fingers pointing down)
+    const handPointingDown = isHandPointingDown(landmarks);
+    if (handPointingDown) {
+        return 'elephant';
+    }
+
+    // Butterfly: Open palm facing camera (all fingers extended and spread)
+    if (fingers.thumb && fingers.index && fingers.middle && fingers.ring && fingers.pinky) {
+        return 'butterfly';
     }
 
     return null;
@@ -219,18 +215,28 @@ function getFingersSpread(landmarks) {
     return spread;
 }
 
-// Helper: Get thumb position
-function getThumbPosition(landmarks) {
+// Helper: Get distance between thumb and index finger
+function getThumbIndexDistance(landmarks) {
     const thumbTip = landmarks[4];
-    const thumbBase = landmarks[2];
-    const indexBase = landmarks[5];
+    const indexTip = landmarks[8];
 
-    const distFromPalm = Math.abs(thumbTip.x - indexBase.x);
+    const distance = Math.sqrt(
+        Math.pow(thumbTip.x - indexTip.x, 2) +
+        Math.pow(thumbTip.y - indexTip.y, 2)
+    );
 
-    if (distFromPalm > 0.1) {
-        return 'extended';
-    }
-    return 'folded';
+    return distance;
+}
+
+// Helper: Check if hand is pointing down (for elephant trunk)
+function isHandPointingDown(landmarks) {
+    const wrist = landmarks[0];
+    const middleTip = landmarks[12];
+
+    // Check if fingers are pointing down (middle finger tip below wrist)
+    const pointingDown = middleTip.y > wrist.y + 0.1;
+
+    return pointingDown;
 }
 
 // Handle detected gesture with smoothing
