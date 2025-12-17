@@ -85,8 +85,8 @@ const hands = new Hands({
 hands.setOptions({
     maxNumHands: 1,
     modelComplexity: 1,
-    minDetectionConfidence: 0.5,
-    minTrackingConfidence: 0.5
+    minDetectionConfidence: 0.3,
+    minTrackingConfidence: 0.3
 });
 
 hands.onResults(onHandResults);
@@ -114,10 +114,13 @@ function onHandResults(results) {
         const landmarks = results.multiHandLandmarks[0];
         const handedness = results.multiHandedness[0].label; // 'Left' or 'Right'
 
+        console.log('Hand detected!'); // Debug log
+
         // Recognize gesture
         const detectedGesture = recognizeGesture(landmarks, handedness);
 
         if (detectedGesture) {
+            console.log('Gesture detected:', detectedGesture); // Debug log
             handleGestureDetected(detectedGesture);
         } else {
             handleNoGesture();
@@ -135,13 +138,13 @@ function recognizeGesture(landmarks, handedness) {
     const handShape = getHandShape(landmarks);
 
     // Rabbit: Two fingers up (index and middle) - peace sign/bunny ears
-    if (fingers.index && fingers.middle && !fingers.ring && !fingers.pinky) {
+    if (fingers.index && fingers.middle) {
         return 'rabbit';
     }
 
     // Wolf: Pinch position (thumb and index close together, forming circle)
     const thumbIndexDistance = getThumbIndexDistance(landmarks);
-    if (thumbIndexDistance < 0.05) { // Thumb and index very close
+    if (thumbIndexDistance < 0.08) { // More lenient distance
         return 'wolf';
     }
 
@@ -164,15 +167,15 @@ function getFingersState(landmarks) {
     const tips = [8, 12, 16, 20]; // Index, Middle, Ring, Pinky
     const pips = [6, 10, 14, 18];
 
-    // More lenient detection with buffer
-    const buffer = 0.02;
+    // Very lenient detection with large buffer
+    const buffer = 0.05;
 
     const fingers = {
-        thumb: landmarks[4].y < landmarks[3].y + buffer, // Thumb up (more lenient)
-        index: landmarks[8].y < landmarks[6].y + buffer, // Index extended (more lenient)
-        middle: landmarks[12].y < landmarks[10].y + buffer, // Middle extended (more lenient)
-        ring: landmarks[16].y < landmarks[14].y + buffer, // Ring extended (more lenient)
-        pinky: landmarks[20].y < landmarks[18].y + buffer // Pinky extended (more lenient)
+        thumb: landmarks[4].y < landmarks[3].y + buffer, // Thumb up (very lenient)
+        index: landmarks[8].y < landmarks[6].y + buffer, // Index extended (very lenient)
+        middle: landmarks[12].y < landmarks[10].y + buffer, // Middle extended (very lenient)
+        ring: landmarks[16].y < landmarks[14].y + buffer, // Ring extended (very lenient)
+        pinky: landmarks[20].y < landmarks[18].y + buffer // Pinky extended (very lenient)
     };
 
     return fingers;
@@ -234,7 +237,7 @@ function isHandPointingDown(landmarks) {
     const middleTip = landmarks[12];
 
     // Check if fingers are pointing down (middle finger tip below wrist)
-    const pointingDown = middleTip.y > wrist.y + 0.1;
+    const pointingDown = middleTip.y > wrist.y + 0.05; // More lenient
 
     return pointingDown;
 }
