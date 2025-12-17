@@ -21,24 +21,24 @@ const CONFIRMATION_FRAMES = 1; // Need 1 frame to confirm gesture change (instan
 // Gesture assets mapping
 const GESTURES = {
     wolf: {
-        image: 'ixp gestures/wolf.PNG',
-        video: null,
-        cssAnimation: true
+        image: 'ixp gestures/wolf1.PNG',
+        video: 'ixp gestures/wolf move.mp4',
+        cssAnimation: false
     },
     butterfly: {
-        image: 'ixp gestures/butterfly.PNG',
-        video: null,
-        cssAnimation: true
+        image: 'ixp gestures/butterfly1.PNG',
+        video: 'ixp gestures/butterfly move.mp4',
+        cssAnimation: false
     },
     rabbit: {
-        image: 'ixp gestures/rabbit.PNG',
+        image: 'ixp gestures/rabbit1.PNG',
         video: 'ixp gestures/rabbit move.mp4',
         cssAnimation: false
     },
     elephant: {
-        image: 'ixp gestures/elephant.PNG',
-        video: null,
-        cssAnimation: true
+        image: 'ixp gestures/elephant1.PNG',
+        video: 'ixp gestures/elephant move.mp4',
+        cssAnimation: false
     }
 };
 
